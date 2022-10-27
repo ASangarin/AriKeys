@@ -2,7 +2,9 @@ package eu.asangarin.arikeys.fabric.mixin;
 
 import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
+import eu.asangarin.arikeys.util.AriKeysChannels;
 import eu.asangarin.arikeys.util.PacketByteBufs;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -24,7 +26,6 @@ public class AKKeyboardFabricMixin {
 	@Shadow
 	@Final
 	private static Map<InputUtil.Key, KeyBinding> KEY_TO_BINDINGS;
-	private static final Identifier KEY_CHANNEL = new Identifier("arikeys", "keybind");
 
 	private static final List<InputUtil.Key> pressedKeys = new ArrayList<>();
 
@@ -67,6 +68,6 @@ public class AKKeyboardFabricMixin {
 		/* Send the packet that a key was pressed
 		alongside the ID of the binding in question
 		and whether it was released or not */
-		//NetworkManager.sendToServer(KEY_CHANNEL, buf);
+		ClientPlayNetworking.send(AriKeysChannels.KEY_CHANNEL, buf);
 	}
 }

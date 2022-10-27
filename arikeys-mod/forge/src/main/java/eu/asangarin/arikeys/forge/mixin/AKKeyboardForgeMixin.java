@@ -2,6 +2,8 @@ package eu.asangarin.arikeys.forge.mixin;
 
 import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
+import eu.asangarin.arikeys.forge.AriKeysForge;
+import eu.asangarin.arikeys.forge.network.KeybindHandler;
 import eu.asangarin.arikeys.util.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -24,7 +26,6 @@ public class AKKeyboardForgeMixin {
 	@Shadow
 	@Final
 	private static KeyMappingLookup f_90810_;
-	private static final Identifier KEY_CHANNEL = new Identifier("arikeys", "keybind");
 
 	private static final List<InputUtil.Key> pressedKeys = new ArrayList<>();
 
@@ -58,15 +59,9 @@ public class AKKeyboardForgeMixin {
 	}
 
 	private static void sendPacket(Identifier id, boolean release) {
-		PacketByteBuf buf = PacketByteBufs.create();
-		buf.writeString("");
-		buf.writeString(id.getNamespace());
-		buf.writeString("");
-		buf.writeString(id.getPath());
-		buf.writeBoolean(release);
 		/* Send the packet that a key was pressed
 		alongside the ID of the binding in question
 		and whether it was released or not */
-		//NetworkManager.sendToServer(KEY_CHANNEL, buf);
+		AriKeysForge.KEY.sendToServer(new KeybindHandler(id, release));
 	}
 }

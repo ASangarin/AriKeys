@@ -18,14 +18,17 @@ import java.io.IOException;
 public class AriKeysListener implements PluginMessageListener {
 	@Override
 	public void onPluginMessageReceived(String channel, @NotNull Player player, byte[] message) {
+		System.out.println(channel);
 		// When receiving a handshake or key press, forward to their respective methods.
 		if (channel.equalsIgnoreCase(AriKeysChannels.HANDSHAKE)) receiveGreeting(player);
-		else if (channel.equalsIgnoreCase(AriKeysChannels.KEY_PRESS)) receiveKeyPress(player, new DataInputStream(new ByteArrayInputStream(message)));
+		else if (channel.equalsIgnoreCase(AriKeysChannels.KEY_PRESS))
+			receiveKeyPress(player, new DataInputStream(new ByteArrayInputStream(message)));
 	}
 
 	public void receiveKeyPress(Player player, DataInputStream buf) {
 		try {
 			// Read the key press ID then call the AriKeyPress event.
+			buf.readByte();
 			String namespace = buf.readUTF();
 			String key = buf.readUTF();
 			boolean firstPress = !buf.readBoolean();
@@ -48,19 +51,28 @@ public class AriKeysListener implements PluginMessageListener {
 						.callEvent(firstPress ? new AriKeyPressEvent(player, id, false) : new AriKeyReleaseEvent(player, id, false));
 			}
 		} catch (IOException ignored) {
+			ignored.printStackTrace();
 		}
 	}
 
 	public void receiveGreeting(Player player) {
-		/* Send this servers specified keybindings to the
+		/* Send this server's specified keybindings to the
 		 client. This is delayed to make sure the client is properly
 		 connected before attempting to send any data over. */
 		Bukkit.getScheduler().runTaskLater(AriKeysPlugin.get(), () -> {
 			for (AriKeyInfo info : AriKeysPlugin.get().getConf().getKeyInfoList().values())
 				sendKeyInformation(player, info.getId(), info.getDef(), info.getName(), info.getCategory());
+
 			/* Send the "load" packet after sending every keybinding packet, to tell
 			 the client to load all the user-specific keybinds saved on their machine. */
-			player.sendPluginMessage(AriKeysPlugin.get(), AriKeysChannels.LOAD_KEYS, new byte[]{});
+			ByteArrayOutputStream b = new ByteArrayOutputStream();
+			DataOutputStream out = new DataOutputStream(b);
+			try {
+				out.writeByte(0);
+			} catch (IOException ignored) {
+			}
+
+			player.sendPluginMessage(AriKeysPlugin.get(), AriKeysChannels.LOAD_KEYS, b.toByteArray());
 		}, 20);
 	}
 
@@ -69,6 +81,7 @@ public class AriKeysListener implements PluginMessageListener {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(b);
 		try {
+			out.writeByte(0);
 			out.writeUTF(id.getNamespace());
 			out.writeUTF(id.getKey());
 			out.writeInt(def);

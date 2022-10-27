@@ -1,9 +1,6 @@
 package eu.asangarin.arikeys;
 
-import eu.asangarin.arikeys.util.AriKeysIO;
 import eu.asangarin.arikeys.util.KeyCategoryComparator;
-import eu.asangarin.arikeys.util.PacketByteBufs;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -17,10 +14,6 @@ public class AriKeys {
 	private static final Map<Identifier, AriKey> CURRENT_KEYS = new HashMap<>();
 
 	private static final KeyCategoryComparator CATEGORY_COMPARATOR = new KeyCategoryComparator();
-
-	public static final Identifier HANDSHAKE_CHANNEL = new Identifier("arikeys", "greeting");
-	public static final Identifier ADD_KEY_CHANNEL = new Identifier("arikeys", "addkey");
-	public static final Identifier LOAD_CHANNEL = new Identifier("arikeys", "load");
 
 	public static void init() {
 		/*ClientPlayerEvent.CLIENT_PLAYER_QUIT.register((player) -> {
@@ -71,5 +64,13 @@ public class AriKeys {
 
 	public static Identifier cleanIdentifier(String key) {
 		return new Identifier(Identifier.DEFAULT_NAMESPACE, key.replace("key.", "").replace(".", "").toLowerCase());
+	}
+
+	public static void clear() {
+		CURRENT_KEYS.clear();
+	}
+
+	public static void add(Identifier id, AriKey ariKey) {
+		CURRENT_KEYS.put(id, ariKey);
 	}
 }
