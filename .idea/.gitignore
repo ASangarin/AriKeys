@@ -1,0 +1,11 @@
+*.ipr
+*.iws
+*.iml
+.classpath
+.project
+.idea/
+classes/
+.metadata
+.vscode
+.settings
+*.launch
