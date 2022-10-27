@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "arikeys",
+  "version": "${version}",
+  "name": "AriKeys",
+  "description": "Allows the Minecraft client to send AriKey keypresses to the server.",
+  "contact": {
+      "homepage": "https://github.com/ASangarin/AriKeys/wiki",
+      "issues": "https://github.com/ASangarin/AriKeys/issues",
+      "sources": "https://github.com/ASangarin/AriKeys"
+  },
+  "authors": ["ASangarin"],
+  "license": "MIT",
+  "icon": "assets/arikeys/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "eu.asangarin.arikeys.fabric.AriKeysFabric"
+    ]
+  },
+  "mixins": [
+    "arikeys.mixins.json",
+    "arikeys-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19.2"
+  }
+}

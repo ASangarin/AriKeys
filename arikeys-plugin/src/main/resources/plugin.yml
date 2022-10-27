@@ -1,0 +1,17 @@
+name: AriKeys
+version: '${project.version}'
+main: eu.asangarin.arikeys.AriKeysPlugin
+api-version: 1.17
+author: ASangarin
+description: AriKeys Plugin lets your server receive keybind presses from the AriKeys client.
+softdepend: [ PlaceholderAPI, MythicMobs ]
+commands:
+  arikeys:
+    description: The main command for AriKeys.
+    aliases: [ "ak", "keys" ]
+    permission: arikeys.admin
+    usage: "Usage: /arikeys [reload|info]"
+permissions:
+  arikeys.admin:
+    description: The main permission for AriKeys.
+    default: op

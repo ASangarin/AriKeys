@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "eu.asangarin.arikeys.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "AKKeyboardForgeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
