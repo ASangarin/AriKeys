@@ -3,6 +3,7 @@ package eu.asangarin.arikeys.forge.mixin;
 import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
 import eu.asangarin.arikeys.forge.AriKeysForge;
+import eu.asangarin.arikeys.forge.network.KeyPressData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -59,6 +60,6 @@ public class AKKeyboardForgeMixin {
 		/* Send the packet that a key was pressed
 		alongside the ID of the binding in question
 		and whether it was released or not */
-		AriKeysForge.KEY.sendToServer(new KeyHandler(id, release));
+		AriKeysForge.KEY.sendToServer(new KeyPressData(id, release));
 	}
 }
