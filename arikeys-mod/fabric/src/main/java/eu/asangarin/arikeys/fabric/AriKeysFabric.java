@@ -30,14 +30,10 @@ public class AriKeysFabric implements ClientModInitializer {
 		// Receive keybindings data from the server
 		ClientPlayNetworking.registerGlobalReceiver(AriKeysChannels.ADD_KEY_CHANNEL, (client, handler, buf, responseSender) -> {
 			buf.readByte();
-			buf.readString(); // Man, I love working with bytes...
 			String path = buf.readString();
-			buf.readString(); // Don't you love it too?
 			String key = buf.readString();
 			int defKey = buf.readInt();
-			buf.readString(); // Wow, it got even better!
 			String name = buf.readString();
-			buf.readString(); // This is just incredible.
 			String category = buf.readString();
 
 			/* Always read data async and then use client.execute() after for thread safety. */

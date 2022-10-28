@@ -60,9 +60,8 @@ public class AKKeyboardFabricMixin {
 
 	private static void sendPacket(Identifier id, boolean release) {
 		PacketByteBuf buf = PacketByteBufs.create();
-		buf.writeString("");
+		buf.writeByte(0);
 		buf.writeString(id.getNamespace());
-		buf.writeString("");
 		buf.writeString(id.getPath());
 		buf.writeBoolean(release);
 		/* Send the packet that a key was pressed

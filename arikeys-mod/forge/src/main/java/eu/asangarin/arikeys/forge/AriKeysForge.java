@@ -22,6 +22,8 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 @Mod(AriKeys.MOD_ID)
 public class AriKeysForge {
+	private static final Object DEF_OBJECT = new Object();
+
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel HANDSHAKE = NetworkRegistry.newSimpleChannel(AriKeysChannels.HANDSHAKE_CHANNEL, () -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
@@ -40,28 +42,29 @@ public class AriKeysForge {
 			MinecraftForge.EVENT_BUS.addListener(this::handlePlayerLogin);
 			MinecraftForge.EVENT_BUS.addListener(this::handlePlayerDisconnect);
 
-			HANDSHAKE.registerMessage(0, Void.class, (v, buf) -> {}, (buf) -> null, (v, context) -> {});
+			HANDSHAKE.registerMessage(0, Object.class, (v, buf) -> {
+			}, (buf) -> DEF_OBJECT, (v, context) -> {
+			});
 			KEY.registerMessage(0, KeyPressData.class, (key, buf) -> {
 				buf.writeString(key.getId().getNamespace());
 				buf.writeString(key.getId().getPath());
 				buf.writeBoolean(key.isRelease());
-			}, (buf) -> null, (key, context) -> {});
-			ADD_KEY.registerMessage(0, KeyAddData.class, (key, buf) -> {}, (buf) -> {
-				buf.readString();
+			}, (buf) -> null, (key, context) -> {
+			});
+			ADD_KEY.registerMessage(0, KeyAddData.class, (key, buf) -> {
+			}, (buf) -> {
 				String path = buf.readString();
-				buf.readString();
 				String key = buf.readString();
 				int defKey = buf.readInt();
-				buf.readString();
 				String name = buf.readString();
-				buf.readString();
 				String category = buf.readString();
 
 				Identifier id = new Identifier(path, key);
 				return new KeyAddData(id, name, category, defKey);
 			}, (key, ctx) -> ctx.get().enqueueWork(() -> AriKeys.add(key.getId(),
 					new AriKey(key.getId(), key.getName(), key.getCategory(), InputUtil.Type.KEYSYM.createFromCode(key.getDefKey())))));
-			LOAD.registerMessage(0, Void.class, (v, buf) -> {}, (buf) -> null, (v, ctx) -> ctx.get().enqueueWork(AriKeysIO::load));
+			LOAD.registerMessage(0, Object.class, (v, buf) -> {
+			}, (buf) -> DEF_OBJECT, (v, ctx) -> ctx.get().enqueueWork(AriKeysIO::load));
 
 			AriKeys.init();
 		}
@@ -71,7 +74,7 @@ public class AriKeysForge {
 		if (MinecraftClient.getInstance().player == null || (event.getEntity().getUuid() != MinecraftClient.getInstance().player.getUuid())) return;
 		AriKeys.clear();
 		// Send a packet informing the server that a client with the mod has joined
-		HANDSHAKE.sendToServer(null);
+		HANDSHAKE.sendToServer(DEF_OBJECT);
 	}
 
 	private void handlePlayerDisconnect(EntityLeaveLevelEvent event) {
