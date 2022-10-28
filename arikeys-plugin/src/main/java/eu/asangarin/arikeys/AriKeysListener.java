@@ -50,8 +50,8 @@ public class AriKeysListener implements PluginMessageListener {
 				Bukkit.getPluginManager()
 						.callEvent(firstPress ? new AriKeyPressEvent(player, id, false) : new AriKeyReleaseEvent(player, id, false));
 			}
-		} catch (IOException ignored) {
-			ignored.printStackTrace();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 		}
 	}
 

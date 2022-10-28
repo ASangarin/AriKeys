@@ -1,13 +1,14 @@
 package eu.asangarin.arikeys.forge;
 
+import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
-import eu.asangarin.arikeys.forge.network.AddKeyHandler;
-import eu.asangarin.arikeys.forge.network.HandshakeHandler;
-import eu.asangarin.arikeys.forge.network.KeybindHandler;
-import eu.asangarin.arikeys.forge.network.LoadHandler;
+import eu.asangarin.arikeys.forge.network.KeyAddData;
+import eu.asangarin.arikeys.forge.network.KeyPressData;
 import eu.asangarin.arikeys.util.AriKeysChannels;
 import eu.asangarin.arikeys.util.AriKeysIO;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
@@ -39,17 +40,28 @@ public class AriKeysForge {
 			MinecraftForge.EVENT_BUS.addListener(this::handlePlayerLogin);
 			MinecraftForge.EVENT_BUS.addListener(this::handlePlayerDisconnect);
 
-			HANDSHAKE.registerMessage(0, HandshakeHandler.class, HandshakeHandler::encode, HandshakeHandler::decode, HandshakeHandler::consume);
-			KEY.registerMessage(0, KeybindHandler.class, KeybindHandler::encode, KeybindHandler::decode, KeybindHandler::consume);
-			ADD_KEY.registerMessage(0, AddKeyHandler.class, AddKeyHandler::encode, AddKeyHandler::decode, AddKeyHandler::consume);
-			LOAD.registerMessage(0, LoadHandler.class, LoadHandler::encode, LoadHandler::decode, LoadHandler::consume);
+			HANDSHAKE.registerMessage(0, Void.class, (v, buf) -> {}, (buf) -> null, (v, context) -> {});
+			KEY.registerMessage(0, KeyPressData.class, (key, buf) -> {
+				buf.writeString(key.getId().getNamespace());
+				buf.writeString(key.getId().getPath());
+				buf.writeBoolean(key.isRelease());
+			}, (buf) -> null, (key, context) -> {});
+			ADD_KEY.registerMessage(0, KeyAddData.class, (key, buf) -> {}, (buf) -> {
+				buf.readString();
+				String path = buf.readString();
+				buf.readString();
+				String key = buf.readString();
+				int defKey = buf.readInt();
+				buf.readString();
+				String name = buf.readString();
+				buf.readString();
+				String category = buf.readString();
 
-
-			String protocol = "1";
-			SimpleChannel test = NetworkRegistry.newSimpleChannel(AriKeysChannels.LOAD_CHANNEL, () -> protocol,
-					protocol::equals, protocol::equals);
-			test.registerMessage(0, Object.class, (obj, buf) -> {}, (buf) -> new Object(),
-					(obj, ctx) -> ctx.get().enqueueWork(AriKeysIO::load));
+				Identifier id = new Identifier(path, key);
+				return new KeyAddData(id, name, category, defKey);
+			}, (key, ctx) -> ctx.get().enqueueWork(() -> AriKeys.add(key.getId(),
+					new AriKey(key.getId(), key.getName(), key.getCategory(), InputUtil.Type.KEYSYM.createFromCode(key.getDefKey())))));
+			LOAD.registerMessage(0, Void.class, (v, buf) -> {}, (buf) -> null, (v, ctx) -> ctx.get().enqueueWork(AriKeysIO::load));
 
 			AriKeys.init();
 		}
@@ -57,11 +69,9 @@ public class AriKeysForge {
 
 	private void handlePlayerLogin(EntityJoinLevelEvent event) {
 		if (MinecraftClient.getInstance().player == null || (event.getEntity().getUuid() != MinecraftClient.getInstance().player.getUuid())) return;
-		System.out.println("Wooo, forge!");
 		AriKeys.clear();
 		// Send a packet informing the server that a client with the mod has joined
-		//noinspection InstantiationOfUtilityClass
-		HANDSHAKE.sendToServer(new HandshakeHandler());
+		HANDSHAKE.sendToServer(null);
 	}
 
 	private void handlePlayerDisconnect(EntityLeaveLevelEvent event) {
