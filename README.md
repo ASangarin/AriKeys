@@ -6,12 +6,12 @@ This mod must be used on a server utilizing the [AriKeysPlugin](https://www.spig
 Latest supported Minecraft version: **1.19.2**
 
 ## Installation:
-#Fabric
+- **Fabric**
 1. Install [Fabric](https://fabricmc.net/use/installer/)
 2. Download [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) and put it in your mods folder.
 3. Download [AriKeys](https://github.com/ASangarin/AriKeys/releases) (Fabric) and put it in your mods folder
 
-#Forge
+- **Forge**
 1. Install [Forge](https://files.minecraftforge.net/net/minecraftforge/forge/)
 3. Download [AriKeys](https://github.com/ASangarin/AriKeys/releases) (Forge) and put it in your mods folder
 
