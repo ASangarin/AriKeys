@@ -1,4 +1,11 @@
 {
   "arikeys.controls.title": "AriKeys Controls",
-  "arikeys.aributton": "AriKeys Controls"
+  "arikeys.aributton": "AriKeys Controls",
+
+  "arikeys.modifier.left_shift": "LShift",
+  "arikeys.modifier.right_shift": "RShift",
+  "arikeys.modifier.left_alt": "LAlt",
+  "arikeys.modifier.right_alt": "RAlt",
+  "arikeys.modifier.left_ctrl": "LCtrl",
+  "arikeys.modifier.right_ctrl": "RCtrl"
 }

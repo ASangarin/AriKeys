@@ -11,23 +11,31 @@ run_event_on_command: true
 # will automatically grab these from the server and
 # allow the player to use, see and customize them.
 Keys:
-    example_key: # Purely for organization. Can be named anything.
-        Id: "myserver:mycoolkey" # The namespace and path of the pressed key which is passed to the event
-        Name: "Example Key" # The name of this keybinding as displayed in the settings
-        Category: "Example Category" # The category this key falls under in the settings
-        DefaultKey: 74 # The default keybinding to use. See https://www.glfw.org/docs/latest/group__keys.html (74 is J)
-        RunCommand: "say %player%, you just pressed the example key!" # The command to run. You can use '%player%' as a placeholder.
-        # There is also support for all PAPI placeholders.
-        # If you don't want the key to run a command (for external plugin support), just leave it empty.
+  example_key: # Purely for organization. Can be named anything.
+    Id: "myserver:mycoolkey" # The namespace and path of the pressed key which is passed to the event
+    Name: "Example Key" # The name of this keybinding as displayed in the settings
+    Category: "Example Category" # The category this key falls under in the settings
+    DefaultKey: 74 # The default keybinding to use. See https://www.glfw.org/docs/latest/group__keys.html (74 is J)
+    RunCommand: "say %player%, you just pressed the example key!" # The command to run. You can use '%player%' as a placeholder.
+    # There is also support for all PAPI placeholders.
+    # If you don't want the key to run a command (for external plugin support), just leave it empty.
 
-        #SkillPress: "RunWhenKeyPressed"
-        #SkillRelease: "RunWhenKeyReleased"
-        # If you have MythicMobs installed, you can specify an MM skill to be ran when a key is pressed or released.
-    another_key:
-        Id: "examplekeytwo" # A key without a namespace will simply use the default namespace.
-        #This example ID will become: "arikeys:examplekeytwo"
-        Name: "Another Key"
-        Category: "Example Category"
-        DefaultKey: 77 # 77 is the M key
-        RunCommand: "!msg %player% You pressed another example key. Nice."
-        # Putting a ! as the first letter of the command will make it run from console.
+    #SkillPress: "RunWhenKeyPressed"
+    #SkillRelease: "RunWhenKeyReleased"
+    # If you have MythicMobs installed, you can specify an MM skill to be ran when a key is pressed or released.
+  another_key:
+    Id: "examplekeytwo" # A key without a namespace will simply use the default namespace.
+    #This example ID will become: "arikeys:examplekeytwo"
+    Name: "Another Key"
+    Category: "Example Category"
+    DefaultKey: 77 # 77 is the M key
+    Modifiers: [LEFT_SHIFT, LEFT_CTRL] # The keybindings that must also be held for this to work.
+    # See the wiki (https://github.com/ASangarin/AriKeys/wiki/Available-Modifiers) for available modifiers.
+    RunCommand: "!msg %player% You pressed another example key. Nice."
+    # Putting a ! as the first letter of the command will make it run from console.
+  minecraft_key: # This doesn't have to be named "minecraft_key", you can implement any name that you want.
+    Id: "minecraft:swapoffhand" # You have to register any Minecraft keybinds you want to use here.
+    # If you don't register a Minecraft keybind the AriKeys won't be able to listen to it.
+    # You don't have to include Name, Category, Modifier or DefaultKey as those fields won't be used.
+    # You can still implement a RunCommand and or Mythic Mobs skill. (SkillPress / SkillRelease)
+    # See the wiki (https://github.com/ASangarin/AriKeys/wiki/Minecraft-Keybinds) for all Minecraft keybinds.

@@ -11,6 +11,7 @@ public class KeyAddData {
 	private final Identifier id;
 	private final String name, category;
 	private final int defKey;
+	private final int[] modifiers;
 
 	public static KeyAddData fromBuffer(PacketByteBuf buf) {
 		String path = buf.readString();
@@ -18,8 +19,9 @@ public class KeyAddData {
 		int defKey = buf.readInt();
 		String name = buf.readString();
 		String category = buf.readString();
+		int[] modifiers = buf.readIntArray();
 
 		Identifier id = new Identifier(path, key);
-		return new KeyAddData(id, name, category, defKey);
+		return new KeyAddData(id, name, category, defKey, modifiers);
 	}
 }

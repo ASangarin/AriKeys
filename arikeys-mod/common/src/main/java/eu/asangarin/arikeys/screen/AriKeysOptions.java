@@ -3,6 +3,7 @@ package eu.asangarin.arikeys.screen;
 import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
 import eu.asangarin.arikeys.util.AriKeysIO;
+import eu.asangarin.arikeys.util.ModifierKey;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -13,6 +14,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.HashSet;
 
 public class AriKeysOptions extends GameOptionsScreen {
 	public AriKey focusedMKey;
@@ -29,8 +32,10 @@ public class AriKeysOptions extends GameOptionsScreen {
 		this.addSelectableChild(this.keyBindingListWidget);
 		this.resetButton = this.addDrawableChild(
 				new ButtonWidget(this.width / 2 - 155, this.height - 29, 150, 20, Text.translatable("controls.resetAll"), (button) -> {
-					for (AriKey keyBinding : AriKeys.getKeybinds())
-						keyBinding.setBoundKey(keyBinding.getKeyCode());
+					for (AriKey keyBinding : AriKeys.getKeybinds()) {
+						keyBinding.setBoundKey(keyBinding.getKeyCode(), false);
+						keyBinding.resetBoundModifiers();
+					}
 					KeyBinding.updateKeysByCode();
 				}));
 		this.addDrawableChild(new ButtonWidget(this.width / 2 - 155 + 160, this.height - 29, 150, 20, ScreenTexts.DONE,
@@ -39,8 +44,11 @@ public class AriKeysOptions extends GameOptionsScreen {
 
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (this.focusedMKey != null) {
-
-			focusedMKey.setBoundKey(keyCode == GLFW.GLFW_KEY_ESCAPE ? InputUtil.UNKNOWN_KEY : InputUtil.fromKeyCode(keyCode, scanCode));
+			if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+				focusedMKey.setBoundKey(InputUtil.UNKNOWN_KEY, false);
+				focusedMKey.setBoundModifiers(new HashSet<>());
+			} else if (isModifier(keyCode)) return super.keyPressed(keyCode, scanCode, modifiers);
+			else focusedMKey.setBoundKey(InputUtil.fromKeyCode(keyCode, scanCode), true);
 			AriKeysIO.save();
 
 			this.focusedMKey = null;
@@ -51,9 +59,15 @@ public class AriKeysOptions extends GameOptionsScreen {
 		}
 	}
 
+	private boolean isModifier(int code) {
+		for (ModifierKey modifier : ModifierKey.ALL)
+			if (modifier.getCode() == code) return true;
+		return false;
+	}
+
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (this.focusedMKey != null) {
-			focusedMKey.setBoundKey(InputUtil.Type.MOUSE.createFromCode(button));
+			focusedMKey.setBoundKey(InputUtil.Type.MOUSE.createFromCode(button), true);
 			AriKeysIO.save();
 
 			this.focusedMKey = null;

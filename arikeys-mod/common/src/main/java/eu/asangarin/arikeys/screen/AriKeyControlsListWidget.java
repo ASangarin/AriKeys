@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
 import eu.asangarin.arikeys.util.AriKeysIO;
+import eu.asangarin.arikeys.util.ModifierKey;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
@@ -33,7 +34,7 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 		this.parent = parent;
 		String category = null;
 
-		for (AriKey ariKey : AriKeys.getSortedKeybinds()) {
+		for (AriKey ariKey : AriKeys.getCategorySortedKeybinds()) {
 			String keyCat = ariKey.getCategory();
 			if (!keyCat.equals(category)) {
 				category = keyCat;
@@ -107,15 +108,15 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 		KeyBindingEntry(AriKey ariKey, Text bindingName) {
 			this.ariKey = ariKey;
 			this.bindingName = bindingName;
-			this.editButton = new ButtonWidget(0, 0, 75, 20, bindingName,
-					(button) -> AriKeyControlsListWidget.this.parent.focusedMKey = ariKey) {
+			this.editButton = new ButtonWidget(0, 0, 135, 20, bindingName, (button) -> AriKeyControlsListWidget.this.parent.focusedMKey = ariKey) {
 				protected MutableText getNarrationMessage() {
 					return ariKey.isUnbound() ? Text.translatable("narrator.controls.unbound", bindingName) : Text.translatable(
 							"narrator.controls.bound", bindingName, super.getNarrationMessage());
 				}
 			};
 			this.resetButton = new ButtonWidget(0, 0, 50, 20, Text.translatable("controls.reset"), (button) -> {
-				ariKey.setBoundKey(ariKey.getKeyCode());
+				ariKey.setBoundKey(ariKey.getKeyCode(), false);
+				ariKey.resetBoundModifiers();
 				AriKeysIO.save();
 				KeyBinding.updateKeysByCode();
 			}) {
@@ -131,38 +132,46 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 			float var10003 = (float) (x + 90 - AriKeyControlsListWidget.this.maxKeyNameLength);
 			int var10004 = y + entryHeight / 2;
 			Objects.requireNonNull(AriKeyControlsListWidget.this.client.textRenderer);
-			var10000.draw(matrices, this.bindingName, var10003, (float) (var10004 - 9 / 2), 16777215);
-			this.resetButton.x = x + 190;
+			var10000.draw(matrices, this.bindingName, var10003 - 40, (float) (var10004 - 9 / 2), 16777215);
+			this.resetButton.x = x + 210;
 			this.resetButton.y = y;
 			this.resetButton.active = this.ariKey.hasChanged();
 			this.resetButton.render(matrices, mouseX, mouseY, tickDelta);
-			this.editButton.x = x + 105;
+			this.editButton.x = x + 65;
 			this.editButton.y = y;
-			this.editButton.setMessage(this.ariKey.getBoundKeyCode().getLocalizedText());
+			MutableText editMessage = Text.empty();
+			for (ModifierKey modifier : this.ariKey.getBoundModifiers()) {
+				editMessage.append(Text.translatable(modifier.getTranslationKey()));
+				editMessage.append(Text.literal(" + "));
+			}
+			editMessage.append(this.ariKey.getBoundKeyCode().getLocalizedText().copyContentOnly());
+			editMessage = editMessage.copy();
 			boolean bl2 = false;
 			if (!this.ariKey.isUnbound()) {
 				final List<KeyBinding> bindings = new ArrayList<>(List.of(client.options.allKeys));
 				for (KeyBinding keyBinding : bindings) {
-					if (keyBinding.getBoundKeyTranslationKey().equals(ariKey.getBoundKeyCode().getTranslationKey())) {
+					if (keyBinding.getBoundKeyTranslationKey().equals(ariKey.getBoundKeyCode().getTranslationKey()) && ariKey.getBoundModifiers()
+							.size() == 0) {
 						bl2 = true;
 						break;
 					}
 				}
 				for (AriKey key : AriKeys.getKeybinds()) {
 					if (!key.equals(ariKey) && key.getBoundKeyCode().equals(ariKey.getBoundKeyCode())) {
-						bl2 = true;
-						break;
+						if (key.testModifiers(ariKey.getBoundModifiers())) {
+							bl2 = true;
+							break;
+						}
 					}
 				}
 			}
 
 			if (bl) {
 				this.editButton.setMessage(
-						(Text.literal("> ")).append(this.editButton.getMessage().copyContentOnly().formatted(Formatting.YELLOW)).append(" <")
-								.formatted(Formatting.YELLOW));
+						(Text.literal("> ")).append(editMessage.formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
 			} else if (bl2) {
-				this.editButton.setMessage(this.editButton.getMessage().copyContentOnly().formatted(Formatting.RED));
-			}
+				this.editButton.setMessage(editMessage.formatted(Formatting.RED));
+			} else this.editButton.setMessage(editMessage);
 
 			this.editButton.render(matrices, mouseX, mouseY, tickDelta);
 		}

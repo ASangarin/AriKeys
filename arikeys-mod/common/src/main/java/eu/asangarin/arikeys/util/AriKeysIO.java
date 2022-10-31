@@ -19,7 +19,9 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /* Minecrafts way of storing keybinds. Not the cleanest, but it works. */
 @SuppressWarnings("UnstableApiUsage")
@@ -62,7 +64,17 @@ public class AriKeysIO {
 				String defKey = ariKey.getBoundKeyCode().getTranslationKey();
 				String keybind = MoreObjects.firstNonNull(nbtCompound.contains(key) ? nbtCompound.getString(key) : null, defKey);
 
-				if (!defKey.equals(keybind)) ariKey.setBoundKey(InputUtil.fromTranslationKey(keybind));
+				Set<ModifierKey> modifiers = new HashSet<>(ariKey.getModifiers());
+				for (ModifierKey modifier : ModifierKey.ALL) {
+					String modKey = key + "_" + modifier.getId();
+					if (nbtCompound.contains(modKey)) modifiers.add(modifier);
+					else modifiers.remove(modifier);
+				}
+
+				if (!defKey.equals(keybind) || !modifiers.containsAll(ariKey.getModifiers())) {
+					ariKey.setBoundKey(InputUtil.fromTranslationKey(keybind), false);
+					ariKey.setBoundModifiers(modifiers);
+				}
 			}
 
 			KeyBinding.updateKeysByCode();
@@ -80,6 +92,12 @@ public class AriKeysIO {
 					printWriter.print("arikey_" + ariKey.getId().toString().replace(":", "+"));
 					printWriter.print(':');
 					printWriter.println(ariKey.getBoundKeyCode().getTranslationKey());
+
+					for (ModifierKey modifier : ariKey.getBoundModifiers()) {
+						printWriter.print("arikey_" + ariKey.getId().toString().replace(":", "+") + "_" + modifier.getId());
+						printWriter.print(':');
+						printWriter.println("true");
+					}
 				}
 			} catch (Throwable throwable) {
 				try {

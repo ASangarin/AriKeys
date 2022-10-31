@@ -11,5 +11,4 @@ public class KeyCategoryComparator implements Comparator<AriKey> {
 		int category = key1.getCategory().compareTo(key2.getCategory());
 		return Integer.compare(category, id);
 	}
-
 }

@@ -26,10 +26,17 @@ public class AKKeyboardMixin {
 		if (MinecraftClient.getInstance().currentScreen != null) return;
 
 		KeyBinding keyBinding = AriKeysPlatform.getKeyBinding(key);
-		if (keyBinding != null) registerPress(AriKeys.cleanIdentifier(keyBinding.getTranslationKey()), key, pressed);
+		if (keyBinding != null) {
+			Identifier id = AriKeys.cleanIdentifier(keyBinding.getTranslationKey());
+			if (AriKeys.getVanillaKeys().contains(id)) registerPress(id, key, pressed);
+		}
 
-		for (AriKey ariKey : AriKeys.getKeybinds())
-			if (key.equals(ariKey.getBoundKeyCode())) registerPress(ariKey.getId(), key, pressed);
+		System.out.println("----");
+		for (AriKey ariKey : AriKeys.getModifierSortedKeybinds()) {
+			System.out.println("Key: " + ariKey.getName() + " Index: (" + ariKey.getBoundModifiers().size() + ")");
+			if (key.equals(ariKey.getBoundKeyCode()) && ariKey.testModifiers()) registerPress(ariKey.getId(), key, pressed);
+		}
+		System.out.println("----");
 	}
 
 	private static void registerPress(Identifier id, InputUtil.Key key, boolean pressed) {
@@ -52,17 +59,5 @@ public class AKKeyboardMixin {
 	private static void sendPacket(Identifier id, boolean release) {
 		// Call the platform specific packet sending code
 		AriKeysPlatform.sendKey(new KeyPressData(id, release));
-
-		/* Send the packet that a key was pressed
-		alongside the ID of the binding in question
-		and whether it was released or not */
-		/*
-		PacketByteBuf buf = PacketByteBufs.create();
-		buf.writeByte(0);
-		buf.writeString(id.getNamespace());
-		buf.writeString(id.getPath());
-		buf.writeBoolean(release);
-		ClientPlayNetworking.send(AriKeysChannels.KEY_CHANNEL, buf);
-		 */
 	}
 }
