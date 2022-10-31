@@ -22,6 +22,6 @@ public class AriKeysPlatformImpl {
 		PacketByteBuf buf = PacketByteBufs.create();
 		buf.writeByte(0);
 		data.write(buf);
-		ClientPlayNetworking.send(AriKeysChannels.HANDSHAKE_CHANNEL, buf);
+		ClientPlayNetworking.send(AriKeysChannels.KEY_CHANNEL, buf);
 	}
 }
