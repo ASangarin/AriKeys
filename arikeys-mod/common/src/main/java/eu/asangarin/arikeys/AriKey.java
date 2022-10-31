@@ -1,5 +1,6 @@
 package eu.asangarin.arikeys;
 
+import eu.asangarin.arikeys.util.network.KeyAddData;
 import lombok.Getter;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
@@ -10,6 +11,10 @@ public class AriKey {
 	private final String name, category;
 	private final InputUtil.Key keyCode;
 	private InputUtil.Key boundKeyCode;
+
+	public AriKey(KeyAddData data) {
+		this(data.getId(), data.getName(), data.getCategory(), InputUtil.Type.KEYSYM.createFromCode(data.getDefKey()));
+	}
 
 	public AriKey(Identifier id, String name, String category, InputUtil.Key keyCode) {
 		this.id = id;

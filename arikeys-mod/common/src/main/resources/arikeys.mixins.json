@@ -3,6 +3,7 @@
   "package": "eu.asangarin.arikeys.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "AKKeyboardMixin",
     "AKOptionsScreen"
   ],
   "injectors": {
