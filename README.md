@@ -13,7 +13,7 @@ Latest supported Minecraft version: **1.19.2**
 
 - **Forge**
 1. Install [Forge](https://files.minecraftforge.net/net/minecraftforge/forge/)
-3. Download [AriKeys](https://github.com/ASangarin/AriKeys/releases) (Forge) and put it in your mods folder
+2. Download [AriKeys](https://github.com/ASangarin/AriKeys/releases) (Forge) and put it in your mods folder
 
 ## Usage:
 AriKeys must be used alongside a server running the [AriKeysPlugin](https://www.spigotmc.org/resources/arikeysplugin-custom-keybinds.105968/)
