@@ -31,12 +31,8 @@ public class AKKeyboardMixin {
 			if (AriKeys.getVanillaKeys().contains(id)) registerPress(id, key, pressed);
 		}
 
-		System.out.println("----");
-		for (AriKey ariKey : AriKeys.getModifierSortedKeybinds()) {
-			System.out.println("Key: " + ariKey.getName() + " Index: (" + ariKey.getBoundModifiers().size() + ")");
+		for (AriKey ariKey : AriKeys.getModifierSortedKeybinds())
 			if (key.equals(ariKey.getBoundKeyCode()) && ariKey.testModifiers()) registerPress(ariKey.getId(), key, pressed);
-		}
-		System.out.println("----");
 	}
 
 	private static void registerPress(Identifier id, InputUtil.Key key, boolean pressed) {
