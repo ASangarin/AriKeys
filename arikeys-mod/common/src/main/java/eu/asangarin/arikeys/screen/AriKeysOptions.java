@@ -30,16 +30,15 @@ public class AriKeysOptions extends GameOptionsScreen {
 		if (client == null) return;
 		this.keyBindingListWidget = new AriKeyControlsListWidget(this, this.client);
 		this.addSelectableChild(this.keyBindingListWidget);
-		this.resetButton = this.addDrawableChild(
-				new ButtonWidget(this.width / 2 - 155, this.height - 29, 150, 20, Text.translatable("controls.resetAll"), (button) -> {
-					for (AriKey keyBinding : AriKeys.getKeybinds()) {
-						keyBinding.setBoundKey(keyBinding.getKeyCode(), false);
-						keyBinding.resetBoundModifiers();
-					}
-					KeyBinding.updateKeysByCode();
-				}));
-		this.addDrawableChild(new ButtonWidget(this.width / 2 - 155 + 160, this.height - 29, 150, 20, ScreenTexts.DONE,
-				(button) -> this.client.setScreen(this.parent)));
+		this.resetButton = this.addDrawableChild(ButtonWidget.builder(Text.translatable("controls.resetAll"), (button) -> {
+			for (AriKey keyBinding : AriKeys.getKeybinds()) {
+				keyBinding.setBoundKey(keyBinding.getKeyCode(), false);
+				keyBinding.resetBoundModifiers();
+			}
+			KeyBinding.updateKeysByCode();
+		}).dimensions(this.width / 2 - 155, this.height - 29, 150, 20).build());
+		this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, (button) -> this.client.setScreen(this.parent))
+				.dimensions(this.width / 2 - 155 + 160, this.height - 29, 150, 20).build());
 	}
 
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {

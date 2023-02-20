@@ -6,7 +6,7 @@
 
     <groupId>eu.asangarin</groupId>
     <artifactId>arikeysplugin</artifactId>
-    <version>2.1</version>
+    <version>2.2.1</version>
     <packaging>jar</packaging>
     <name>AriKeysPlugin</name>
 
@@ -53,19 +53,19 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.84.Final</version>
+            <version>4.1.86.Final</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
+            <version>23.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

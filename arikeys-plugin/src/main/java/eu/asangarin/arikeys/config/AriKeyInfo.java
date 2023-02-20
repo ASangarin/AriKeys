@@ -16,19 +16,20 @@ import java.util.Set;
 
 @Getter
 public class AriKeyInfo {
-	private AriKeyInfo(NamespacedKey id, String name, String category, int def, Set<ModifierKey> modifiers, String command, String mythicPress, String mythicRelease) {
+	private AriKeyInfo(NamespacedKey id, String name, String category, int def, Set<ModifierKey> modifiers, String command, String permission, String mythicPress, String mythicRelease) {
 		this.id = id;
 		this.name = name;
 		this.category = category;
 		this.def = def;
 		this.modifiers = modifiers;
 		this.command = command;
+		this.permission = permission;
 		this.mythicPress = mythicPress;
 		this.mythicRelease = mythicRelease;
 	}
 
 	private final NamespacedKey id;
-	private final String name, category, command, mythicPress, mythicRelease;
+	private final String name, category, command, permission, mythicPress, mythicRelease;
 	private final int def;
 	private final Set<ModifierKey> modifiers;
 
@@ -61,7 +62,7 @@ public class AriKeyInfo {
 			}
 
 			return new AriKeyInfo(key, name, category, defaultKey, modifiers, config.getString("RunCommand", ""),
-					config.getString("SkillPress", ""), config.getString("SkillRelease", ""));
+					config.getString("Permission", ""), config.getString("SkillPress", ""), config.getString("SkillRelease", ""));
 		}
 
 		return null;
@@ -94,5 +95,9 @@ public class AriKeyInfo {
 	public void mmSkill(Player player, boolean press) {
 		if (!AriKeysPlugin.get().mm) return;
 		MythicMobsCompat.runSkill(press ? mythicPress : mythicRelease, player);
+	}
+
+	public boolean hasPermission(Player player) {
+		return permission.isEmpty() || player.hasPermission(permission);
 	}
 }
