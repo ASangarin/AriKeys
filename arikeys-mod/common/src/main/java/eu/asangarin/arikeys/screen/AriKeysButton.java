@@ -52,7 +52,7 @@ public class AriKeysButton extends DrawableHelper implements Drawable, Element, 
 	}
 
 	public void renderButton(MatrixStack matrices) {
-		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.enableBlend();

@@ -54,7 +54,7 @@ public class AriKeysNetwork {
 		 connected before attempting to send any data over. */
 		Bukkit.getScheduler().runTaskLater(AriKeysPlugin.get(), () -> {
 			for (AriKeyInfo info : AriKeysPlugin.get().getConf().getKeyInfoList().values())
-				if(info.hasPermission(player)) sendKeyInformation(player, info.getId(), info.getDef(), info.getName(), info.getCategory(), info.getModifiers());
+				sendKeyInformation(player, info.getId(), info.getDef(), info.getName(), info.getCategory(), info.getModifiers());
 
 			/* Send the "load" packet after sending every keybinding packet, to tell
 			 the client to load all the user-specific keybinds saved on their machine.

@@ -108,18 +108,22 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 		KeyBindingEntry(AriKey ariKey, Text bindingName) {
 			this.ariKey = ariKey;
 			this.bindingName = bindingName;
-			this.editButton = ButtonWidget.builder(bindingName, (button) -> AriKeyControlsListWidget.this.parent.focusedMKey = ariKey)
-					.size(135, 20)
-					.narrationSupplier(supplier -> {
-						if (ariKey.isUnbound()) return Text.translatable("narrator.controls.unbound", bindingName);
-						return Text.translatable("narrator.controls.bound", bindingName, supplier.get());
-					}).build();
-			this.resetButton = ButtonWidget.builder(Text.translatable("controls.reset"), (button) -> {
+			this.editButton = new ButtonWidget(0, 0, 135, 20, bindingName, (button) -> AriKeyControlsListWidget.this.parent.focusedMKey = ariKey) {
+				protected MutableText getNarrationMessage() {
+					return ariKey.isUnbound() ? Text.translatable("narrator.controls.unbound", bindingName) : Text.translatable(
+							"narrator.controls.bound", bindingName, super.getNarrationMessage());
+				}
+			};
+			this.resetButton = new ButtonWidget(0, 0, 50, 20, Text.translatable("controls.reset"), (button) -> {
 				ariKey.setBoundKey(ariKey.getKeyCode(), false);
 				ariKey.resetBoundModifiers();
 				AriKeysIO.save();
 				KeyBinding.updateKeysByCode();
-			}).size(50, 20).narrationSupplier(supplier -> Text.translatable("narrator.controls.reset", bindingName)).build();
+			}) {
+				protected MutableText getNarrationMessage() {
+					return Text.translatable("narrator.controls.reset", bindingName);
+				}
+			};
 		}
 
 		public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
@@ -129,12 +133,12 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 			int var10004 = y + entryHeight / 2;
 			Objects.requireNonNull(AriKeyControlsListWidget.this.client.textRenderer);
 			var10000.draw(matrices, this.bindingName, var10003 - 40, (float) (var10004 - 9 / 2), 16777215);
-			this.resetButton.setX(x + 210);
-			this.resetButton.setY(y);
+			this.resetButton.x = x + 210;
+			this.resetButton.y = y;
 			this.resetButton.active = this.ariKey.hasChanged();
 			this.resetButton.render(matrices, mouseX, mouseY, tickDelta);
-			this.editButton.setX(x + 65);
-			this.editButton.setY(y);
+			this.editButton.x = x + 65;
+			this.editButton.y = y;
 			MutableText editMessage = Text.empty();
 			for (ModifierKey modifier : this.ariKey.getBoundModifiers()) {
 				editMessage.append(Text.translatable(modifier.getTranslationKey()));

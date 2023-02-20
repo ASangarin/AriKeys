@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 public class AriKeysFabric implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		// Test
 		// Configure AriKeys on join and clean up on disconnect
 		ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> AriKeys.handleDisconnect()));
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, server) -> AriKeys.handleConnect());

@@ -33,7 +33,6 @@ Keys:
     # See the wiki (https://github.com/ASangarin/AriKeys/wiki/Available-Modifiers) for available modifiers.
     RunCommand: "!msg %player% You pressed another example key. Nice."
     # Putting a ! as the first letter of the command will make it run from console.
-    Permission: 'arikeys.another_key' # This permission is required to see this key
   minecraft_key: # This doesn't have to be named "minecraft_key", you can implement any name that you want.
     Id: "minecraft:swapoffhand" # You have to register any Minecraft keybinds you want to use here.
     # If you don't register a Minecraft keybind the AriKeys won't be able to listen to it.
