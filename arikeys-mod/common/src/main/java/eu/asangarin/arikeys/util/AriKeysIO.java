@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 /* Minecrafts way of storing keybinds. Not the cleanest, but it works. */
-@SuppressWarnings("UnstableApiUsage")
 public class AriKeysIO {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Splitter COLON_SPLITTER = Splitter.on(':').limit(2);

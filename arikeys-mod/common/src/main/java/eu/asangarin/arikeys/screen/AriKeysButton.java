@@ -52,13 +52,13 @@ public class AriKeysButton extends DrawableHelper implements Drawable, Element, 
 	}
 
 	public void renderButton(MatrixStack matrices) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.enableDepthTest();
-		this.drawTexture(matrices, this.x, this.y, 0, this.isHovered() ? 20 : 0, 20, 20);
+		drawTexture(matrices, this.x, this.y, 0, this.isHovered() ? 20 : 0, 20, 20);
 	}
 
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -98,17 +98,13 @@ public class AriKeysButton extends DrawableHelper implements Drawable, Element, 
 		return this.hovered || this.focused;
 	}
 
-	public boolean changeFocus(boolean lookForwards) {
-		if (this.active && this.visible) {
-			this.focused = !this.focused;
-			return this.focused;
-		} else {
-			return false;
-		}
-	}
-
 	public boolean isMouseOver(double mouseX, double mouseY) {
 		return this.active && this.visible && mouseX >= (double) this.x && mouseY >= (double) this.y && mouseX < (double) (this.x + 20) && mouseY < (double) (this.y + 20);
+	}
+
+	@Override
+	public void setFocused(boolean focused) {
+		this.focused = focused;
 	}
 
 	public void playDownSound(SoundManager soundManager) {
