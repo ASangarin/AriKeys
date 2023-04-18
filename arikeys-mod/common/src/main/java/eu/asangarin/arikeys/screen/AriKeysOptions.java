@@ -6,6 +6,7 @@ import eu.asangarin.arikeys.util.AriKeysIO;
 import eu.asangarin.arikeys.util.ModifierKey;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
+import net.minecraft.client.gui.screen.option.KeybindsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
@@ -30,16 +31,17 @@ public class AriKeysOptions extends GameOptionsScreen {
 		if (client == null) return;
 		this.keyBindingListWidget = new AriKeyControlsListWidget(this, this.client);
 		this.addSelectableChild(this.keyBindingListWidget);
-		this.resetButton = this.addDrawableChild(
-				new ButtonWidget(this.width / 2 - 155, this.height - 29, 150, 20, Text.translatable("controls.resetAll"), (button) -> {
-					for (AriKey keyBinding : AriKeys.getKeybinds()) {
-						keyBinding.setBoundKey(keyBinding.getKeyCode(), false);
-						keyBinding.resetBoundModifiers();
-					}
-					KeyBinding.updateKeysByCode();
-				}));
-		this.addDrawableChild(new ButtonWidget(this.width / 2 - 155 + 160, this.height - 29, 150, 20, ScreenTexts.DONE,
-				(button) -> this.client.setScreen(this.parent)));
+		this.resetButton = this.addDrawableChild(ButtonWidget.builder(Text.translatable("controls.resetAll"), (button) -> {
+			for (AriKey keyBinding : AriKeys.getKeybinds()) {
+				keyBinding.setBoundKey(keyBinding.getKeyCode(), false);
+				keyBinding.resetBoundModifiers();
+			}
+			KeyBinding.updateKeysByCode();
+		}).dimensions(this.width / 2 - 155, this.height - 29, 150, 20).build());
+
+
+		this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, (button) -> this.client.setScreen(this.parent))
+				.dimensions(this.width / 2 - 155 + 160, this.height - 29, 150, 20).build());
 	}
 
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
@@ -81,7 +83,7 @@ public class AriKeysOptions extends GameOptionsScreen {
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		this.renderBackground(matrices);
 		this.keyBindingListWidget.render(matrices, mouseX, mouseY, delta);
-		drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
+		KeybindsScreen.drawCenteredTextWithShadow(matrices, this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
 		boolean canReset = false;
 
 		for (AriKey ariKey : AriKeys.getKeybinds()) {
