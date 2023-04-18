@@ -6,7 +6,7 @@
 
     <groupId>eu.asangarin</groupId>
     <artifactId>arikeysplugin</artifactId>
-    <version>2.1</version>
+    <version>2.2</version>
     <packaging>jar</packaging>
     <name>AriKeysPlugin</name>
 
@@ -48,6 +48,13 @@
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>aria-repo</id>
+            <url>https://www.asangarin.eu/repo/snapshots</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
