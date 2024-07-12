@@ -1,3 +1,5 @@
+[<img src="https://img.shields.io/badge/Donate-Paypal-blue">](https://www.paypal.com/donate/?hosted_button_id=XWVR2XKQ8UVLN)
+---
 ![AriKeys Title](https://i.imgur.com/OMtfz7Z.png)
 
 AriKeys is a client-side mod for Minecraft, which allows your client to receive and send keypresses between servers using the AriKeys plugin.
@@ -24,4 +26,4 @@ When joining such a server, it will send the configured keybinds to your client 
 (Please note that the button only appears on compatible servers)
 
 ## Support
-If you require support or have questions, reach out to me on the [MythicMobs Discord](https://discord.gg/K3tqXfT) or simply open an issue on this GitHub repo.
+If you require support or have questions, reach out to me on the [Support Discord](https://discord.gg/bPkStPTmNK) or simply open an issue on this GitHub repo.
