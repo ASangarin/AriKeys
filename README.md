@@ -5,7 +5,7 @@
 AriKeys is a client-side mod for Minecraft, which allows your client to receive and send keypresses between servers using the AriKeys plugin.
 This mod must be used on a server utilizing the [AriKeysPlugin](https://www.spigotmc.org/resources/arikeysplugin-custom-keybinds.105968/) to add proper functionality.
 
-Latest supported Minecraft version: **1.19.2**
+Latest supported Minecraft version: **1.20.1**
 
 ## Installation:
 - **Fabric**
