@@ -9,6 +9,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,7 +19,8 @@ import java.util.List;
 
 @Mixin(KeyBinding.class)
 public class AKKeyboardMixin {
-	private static final List<InputUtil.Key> pressedKeys = new ArrayList<>();
+	@Unique
+	private static final List<InputUtil.Key> arikeys$pressedKeys = new ArrayList<>();
 
 	@Inject(method = "setKeyPressed", at = @At("HEAD"))
 	private static void input(InputUtil.Key key, boolean pressed, CallbackInfo ci) {
@@ -28,31 +30,33 @@ public class AKKeyboardMixin {
 		KeyBinding keyBinding = AriKeysPlatform.getKeyBinding(key);
 		if (keyBinding != null) {
 			Identifier id = AriKeys.cleanIdentifier(keyBinding.getTranslationKey());
-			if (AriKeys.getVanillaKeys().contains(id)) registerPress(id, key, pressed);
+			if (AriKeys.getVanillaKeys().contains(id)) arikeys$registerPress(id, key, pressed);
 		}
 
 		for (AriKey ariKey : AriKeys.getModifierSortedKeybinds())
-			if (key.equals(ariKey.getBoundKeyCode()) && ariKey.testModifiers()) registerPress(ariKey.getId(), key, pressed);
+			if (key.equals(ariKey.getBoundKeyCode()) && ariKey.testModifiers()) arikeys$registerPress(ariKey.getId(), key, pressed);
 	}
 
-	private static void registerPress(Identifier id, InputUtil.Key key, boolean pressed) {
+	@Unique
+	private static void arikeys$registerPress(Identifier id, InputUtil.Key key, boolean pressed) {
 		// Check if the button was pressed or released
 		if (pressed) {
-			boolean held = pressedKeys.contains(key);
+			boolean held = arikeys$pressedKeys.contains(key);
 			// Check if it is already being pressed
 			if (!held) {
 				// Add it to the list of currently pressed keys
-				pressedKeys.add(key);
-				sendPacket(id, false);
+				arikeys$pressedKeys.add(key);
+				arikeys$sendPacket(id, false);
 			}
 		} else {
 			// Remove it from the list of currently pressed keys
-			pressedKeys.remove(key);
-			sendPacket(id, true);
+			arikeys$pressedKeys.remove(key);
+			arikeys$sendPacket(id, true);
 		}
 	}
 
-	private static void sendPacket(Identifier id, boolean release) {
+	@Unique
+	private static void arikeys$sendPacket(Identifier id, boolean release) {
 		// Call the platform specific packet sending code
 		AriKeysPlatform.sendKey(new KeyPressData(id, release));
 	}

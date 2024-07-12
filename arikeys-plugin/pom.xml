@@ -6,7 +6,7 @@
 
     <groupId>eu.asangarin</groupId>
     <artifactId>arikeysplugin</artifactId>
-    <version>2.1</version>
+    <version>2.2</version>
     <packaging>jar</packaging>
     <name>AriKeysPlugin</name>
 
@@ -49,6 +49,13 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>aria-repo</id>
+            <url>https://www.asangarin.eu/repo/snapshots</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -59,19 +66,19 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.84.Final</version>
+            <version>4.1.90.Final</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
+            <version>24.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>1.18.26</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
