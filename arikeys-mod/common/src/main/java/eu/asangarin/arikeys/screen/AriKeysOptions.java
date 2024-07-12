@@ -4,14 +4,13 @@ import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
 import eu.asangarin.arikeys.util.AriKeysIO;
 import eu.asangarin.arikeys.util.ModifierKey;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
-import net.minecraft.client.gui.screen.option.KeybindsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
@@ -80,10 +79,10 @@ public class AriKeysOptions extends GameOptionsScreen {
 		}
 	}
 
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.renderBackground(matrices);
-		this.keyBindingListWidget.render(matrices, mouseX, mouseY, delta);
-		KeybindsScreen.drawCenteredTextWithShadow(matrices, this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+		this.renderBackground(context);
+		this.keyBindingListWidget.render(context, mouseX, mouseY, delta);
+		context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
 		boolean canReset = false;
 
 		for (AriKey ariKey : AriKeys.getKeybinds()) {
@@ -94,6 +93,6 @@ public class AriKeysOptions extends GameOptionsScreen {
 		}
 
 		this.resetButton.active = canReset;
-		super.render(matrices, mouseX, mouseY, delta);
+		super.render(context, mouseX, mouseY, delta);
 	}
 }

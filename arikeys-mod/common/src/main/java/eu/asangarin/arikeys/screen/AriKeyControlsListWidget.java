@@ -6,7 +6,7 @@ import eu.asangarin.arikeys.AriKeys;
 import eu.asangarin.arikeys.util.AriKeysIO;
 import eu.asangarin.arikeys.util.ModifierKey;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -14,7 +14,6 @@ import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -22,7 +21,6 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 
 public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsListWidget.Entry> {
@@ -69,13 +67,11 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 			this.textWidth = AriKeyControlsListWidget.this.client.textRenderer.getWidth(this.text);
 		}
 
-		public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-			TextRenderer var10000 = AriKeyControlsListWidget.this.client.textRenderer;
-			assert AriKeyControlsListWidget.this.client.currentScreen != null;
-			float var10003 = (float) (AriKeyControlsListWidget.this.client.currentScreen.width / 2 - this.textWidth / 2);
-			int var10004 = y + entryHeight;
-			Objects.requireNonNull(AriKeyControlsListWidget.this.client.textRenderer);
-			var10000.draw(matrices, this.text, var10003, (float) (var10004 - 9 - 1), 16777215);
+		public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+			assert client.currentScreen != null;
+			int width = (client.currentScreen.width / 2 - this.textWidth / 2);
+			int height = y + entryHeight;
+			context.drawText(client.textRenderer, this.text, width, height - 9 - 1, 16777215, false);
 		}
 
 		public List<? extends Element> children() {
@@ -118,17 +114,16 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 			}).dimensions(0, 0, 50, 20).narrationSupplier(supplier -> Text.translatable("narrator.controls.reset", bindingName)).build();
 		}
 
-		public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-			boolean bl = AriKeyControlsListWidget.this.parent.focusedMKey == this.ariKey;
-			TextRenderer var10000 = AriKeyControlsListWidget.this.client.textRenderer;
-			float var10003 = (float) (x + 90 - AriKeyControlsListWidget.this.maxKeyNameLength);
-			int var10004 = y + entryHeight / 2;
-			Objects.requireNonNull(AriKeyControlsListWidget.this.client.textRenderer);
-			var10000.draw(matrices, this.bindingName, var10003 - 40, (float) (var10004 - 9 / 2), 16777215);
+		public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+			boolean bl = parent.focusedMKey == this.ariKey;
+			int width = x + 20 - maxKeyNameLength;
+			int height = y + entryHeight / 2;
+			context.drawText(client.textRenderer, this.bindingName, width, height - 9 / 2, 16777215, false);
+
 			this.resetButton.setX(x + 210);
 			this.resetButton.setY(y);
 			this.resetButton.active = this.ariKey.hasChanged();
-			this.resetButton.render(matrices, mouseX, mouseY, tickDelta);
+			this.resetButton.render(context, mouseX, mouseY, tickDelta);
 			this.editButton.setX(x + 65);
 			this.editButton.setY(y);
 			MutableText editMessage = Text.empty();
@@ -159,13 +154,12 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 			}
 
 			if (bl) {
-				this.editButton.setMessage(
-						(Text.literal("> ")).append(editMessage.formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
+				this.editButton.setMessage((Text.literal("> ")).append(editMessage.formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
 			} else if (bl2) {
 				this.editButton.setMessage(editMessage.formatted(Formatting.RED));
 			} else this.editButton.setMessage(editMessage);
 
-			this.editButton.render(matrices, mouseX, mouseY, tickDelta);
+			this.editButton.render(context, mouseX, mouseY, tickDelta);
 		}
 
 		public List<? extends Element> children() {
