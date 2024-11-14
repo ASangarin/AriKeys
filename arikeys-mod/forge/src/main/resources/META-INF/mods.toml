@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[43,)"
+loaderVersion = "[48,)"
 issueTrackerURL = "https://github.com/ASangarin/AriKeys/issues"
 license = "MIT"
 
@@ -16,13 +16,20 @@ logoFile = "icon.png"
 [[dependencies.arikeys]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[48,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.arikeys]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20,)"
+versionRange = "[1.20.2,)"
 ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.arikeys]]
+modId = "architectury"
+mandatory = true
+versionRange = "[10.1.20,)"
+ordering = "AFTER"
 side = "CLIENT"

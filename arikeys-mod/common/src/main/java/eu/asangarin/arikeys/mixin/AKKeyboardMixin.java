@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Mixin(KeyBinding.class)
@@ -28,16 +29,18 @@ public class AKKeyboardMixin {
 		// Only check for keybinds while outside a GUI
 		if (MinecraftClient.getInstance().currentScreen != null) return;
 
-		KeyBinding keyBinding = AriKeysPlatform.getKeyBinding(key);
-		if (keyBinding != null) {
-			String path = arikeys$cleanTranslationKey(keyBinding.getTranslationKey());
-			try {
-				Identifier id = new Identifier(Identifier.DEFAULT_NAMESPACE, path);
-				if (AriKeys.getVanillaKeys().contains(id))
-					arikeys$registerPress(id, key, pressed);
-			} catch (InvalidIdentifierException id) {
-				//noinspection CallToPrintStackTrace
-				id.printStackTrace();
+		Collection<KeyBinding> keyBindings = AriKeysPlatform.getKeyBinding(key);
+		for(KeyBinding binding : keyBindings) {
+			if (binding != null) {
+				String path = arikeys$cleanTranslationKey(binding.getTranslationKey());
+				try {
+					Identifier id = new Identifier(Identifier.DEFAULT_NAMESPACE, path);
+					if (AriKeys.getVanillaKeys().contains(id))
+						arikeys$registerPress(id, key, pressed);
+				} catch (InvalidIdentifierException id) {
+					//noinspection CallToPrintStackTrace
+					id.printStackTrace();
+				}
 			}
 		}
 

@@ -5,6 +5,8 @@ import eu.asangarin.arikeys.util.network.KeyPressData;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
+import java.util.Collection;
+
 public class AriKeysPlatform {
 	@ExpectPlatform
 	public static void sendHandshake() {
@@ -17,7 +19,7 @@ public class AriKeysPlatform {
 	}
 
 	@ExpectPlatform
-	public static KeyBinding getKeyBinding(InputUtil.Key code) {
+	public static Collection<KeyBinding> getKeyBinding(InputUtil.Key code) {
 		throw new AssertionError();
 	}
 }

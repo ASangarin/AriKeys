@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(KeyBinding.class)
 public interface AKKeyboardForgeMixin {
-	@Accessor("f_90810_")
+	@Accessor("KEY_TO_BINDINGS")
 	static KeyMappingLookup getKeyBindings() {
 		throw new AssertionError();
 	}

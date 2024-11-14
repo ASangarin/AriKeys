@@ -9,13 +9,16 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.network.PacketByteBuf;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public class AriKeysPlatformImpl {
 	public static void sendHandshake() {
 		ClientPlayNetworking.send(AriKeysChannels.HANDSHAKE_CHANNEL, PacketByteBufs.empty());
 	}
 
-	public static KeyBinding getKeyBinding(InputUtil.Key code) {
-		return AKKeyboardFabricMixin.getKeyBindings().get(code);
+	public static Collection<KeyBinding> getKeyBinding(InputUtil.Key code) {
+		return Collections.singleton(AKKeyboardFabricMixin.getKeyBindings().get(code));
 	}
 
 	public static void sendKey(KeyPressData data) {
