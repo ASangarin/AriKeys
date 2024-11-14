@@ -5,10 +5,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 
+@Getter
 public abstract class AriKeyEvent extends PlayerEvent {
-	@Getter
 	private final NamespacedKey id;
-	@Getter
 	private final boolean registered;
 
 	protected AriKeyEvent(Player player, NamespacedKey id, boolean registered) {

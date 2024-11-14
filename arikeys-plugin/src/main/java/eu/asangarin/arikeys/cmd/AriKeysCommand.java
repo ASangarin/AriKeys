@@ -29,7 +29,7 @@ public class AriKeysCommand implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (cmd.equals("info")) {
-			sender.sendMessage(ChatColor.AQUA + "[AriKeys] " + ChatColor.GREEN + "Version 1.0");
+			sender.sendMessage(ChatColor.AQUA + "[AriKeys] " + ChatColor.GREEN + "Version 2.3.1");
 			return true;
 		}
 
