@@ -28,7 +28,7 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 	int maxKeyNameLength;
 
 	public AriKeyControlsListWidget(AriKeysOptions parent, MinecraftClient client) {
-		super(client, parent.width + 45, parent.height, 43, parent.height - 32, 20);
+		super(client, parent.width + 45, parent.height - 52, 20, 20);
 		this.parent = parent;
 		String category = null;
 

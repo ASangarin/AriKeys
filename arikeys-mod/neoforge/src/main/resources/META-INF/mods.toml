@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[48,)"
+loaderVersion = "[2,)"
 issueTrackerURL = "https://github.com/ASangarin/AriKeys/issues"
 license = "MIT"
 
@@ -14,15 +14,20 @@ Allows the Minecraft client to send AriKey keypresses to the server.
 logoFile = "icon.png"
 
 [[dependencies.arikeys]]
-modId = "forge"
-mandatory = true
-versionRange = "[48,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[20.4,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.arikeys]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.2,)"
+type = "required"
+versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[mixins]]
+config = "arikeys.mixins.json"
+[[mixins]]
+config = "arikeys-neoforge.mixins.json"
