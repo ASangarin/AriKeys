@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.InvalidIdentifierException;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,12 +30,20 @@ public class AKKeyboardMixin {
 
 		KeyBinding keyBinding = AriKeysPlatform.getKeyBinding(key);
 		if (keyBinding != null) {
-			Identifier id = AriKeys.cleanIdentifier(keyBinding.getTranslationKey());
-			if (AriKeys.getVanillaKeys().contains(id)) arikeys$registerPress(id, key, pressed);
+			String path = arikeys$cleanTranslationKey(keyBinding.getTranslationKey());
+			try {
+				Identifier id = new Identifier(Identifier.DEFAULT_NAMESPACE, path);
+				if (AriKeys.getVanillaKeys().contains(id))
+					arikeys$registerPress(id, key, pressed);
+			} catch (InvalidIdentifierException id) {
+				//noinspection CallToPrintStackTrace
+				id.printStackTrace();
+			}
 		}
 
 		for (AriKey ariKey : AriKeys.getModifierSortedKeybinds())
-			if (key.equals(ariKey.getBoundKeyCode()) && ariKey.testModifiers()) arikeys$registerPress(ariKey.getId(), key, pressed);
+			if (key.equals(ariKey.getBoundKeyCode()) && ariKey.testModifiers())
+				arikeys$registerPress(ariKey.getId(), key, pressed);
 	}
 
 	@Unique
@@ -59,5 +68,11 @@ public class AKKeyboardMixin {
 	private static void arikeys$sendPacket(Identifier id, boolean release) {
 		// Call the platform specific packet sending code
 		AriKeysPlatform.sendKey(new KeyPressData(id, release));
+	}
+
+	@Unique
+	private static String arikeys$cleanTranslationKey(String key) {
+		return key.replace("key.", "").replace(".", "")
+			.replace(" ", "_").toLowerCase();
 	}
 }

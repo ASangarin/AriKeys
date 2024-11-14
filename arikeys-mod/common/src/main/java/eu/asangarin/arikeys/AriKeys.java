@@ -58,10 +58,6 @@ public final class AriKeys {
 		return VANILLA_KEYS;
 	}
 
-	public static Identifier cleanIdentifier(String key) {
-		return new Identifier(Identifier.DEFAULT_NAMESPACE, key.replace("key.", "").replace(".", "").toLowerCase());
-	}
-
 	public static void clear() {
 		VANILLA_KEYS.clear();
 		CUSTOM_KEYS.clear();
