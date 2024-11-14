@@ -70,10 +70,10 @@ public class AriKeysIO {
 					else modifiers.remove(modifier);
 				}
 
-				if (!defKey.equals(keybind) || !modifiers.containsAll(ariKey.getModifiers())) {
+				if (!defKey.equals(keybind))
 					ariKey.setBoundKey(InputUtil.fromTranslationKey(keybind), false);
+				if (!ariKey.getModifiers().containsAll(modifiers))
 					ariKey.setBoundModifiers(modifiers);
-				}
 			}
 
 			KeyBinding.updateKeysByCode();
