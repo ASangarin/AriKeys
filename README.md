@@ -13,7 +13,11 @@ Latest supported Minecraft version: **1.20.1**
 2. Download [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) and put it in your mods folder.
 3. Download [AriKeys](https://github.com/ASangarin/AriKeys/releases) (Fabric) and put it in your mods folder
 
-- **Forge**
+- **NeoForge** *(MC 1.20.4 and above)*
+1. Install [NeoForge](https://projects.neoforged.net/neoforged/neoforge)
+2. Download [AriKeys](https://github.com/ASangarin/AriKeys/releases) (NeoForge) and put it in your mods folder
+
+- **Forge** *(MC 1.20.2 and below)*
 1. Install [Forge](https://files.minecraftforge.net/net/minecraftforge/forge/)
 2. Download [AriKeys](https://github.com/ASangarin/AriKeys/releases) (Forge) and put it in your mods folder
 
