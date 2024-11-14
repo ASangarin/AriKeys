@@ -94,4 +94,9 @@ public class AriKeysOptions extends GameOptionsScreen {
 
 		this.resetButton.active = canReset;
 	}
+
+	@Override
+	public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+		this.renderBackgroundTexture(context);
+	}
 }

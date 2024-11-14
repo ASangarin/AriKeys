@@ -2,6 +2,8 @@
   "arikeys.controls.title": "AriKeys Controls",
   "arikeys.aributton": "AriKeys Controls",
 
+  "arikeys.disabled_message": "No custom keys found!",
+
   "arikeys.modifier.left_shift": "LShift",
   "arikeys.modifier.right_shift": "RShift",
   "arikeys.modifier.left_alt": "LAlt",

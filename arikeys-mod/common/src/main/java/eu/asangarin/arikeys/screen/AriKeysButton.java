@@ -1,6 +1,7 @@
 package eu.asangarin.arikeys.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
@@ -19,28 +20,31 @@ import org.lwjgl.glfw.GLFW;
 
 public class AriKeysButton implements Drawable, Element, Selectable {
 	public static final Identifier WIDGETS_TEXTURE = new Identifier("arikeys", "textures/gui/arikeys_button.png");
+	@Getter
 	private final Text message = Text.translatable("arikeys.aributton");
 	public int x;
 	public int y;
 	protected boolean hovered;
-	public boolean active = true;
-	public boolean visible = true;
+	public boolean active;
+	@Getter
 	private boolean focused;
 
 	protected final AriKeysButton.PressAction onPress;
 
-	public AriKeysButton(int x, int y, AriKeysButton.PressAction onPress) {
+	public AriKeysButton(boolean locked, int x, int y, AriKeysButton.PressAction onPress) {
 		this.x = x;
 		this.y = y;
 		this.onPress = onPress;
+		this.active = !locked;
 	}
 
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-		if (this.visible) {
-			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + 20 && mouseY < this.y + 20;
-			this.renderButton(context);
-		}
+		this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + 20 && mouseY < this.y + 20;
+		this.renderButton(context);
+		if(isHovered() && !active)
+			context.drawTooltip(MinecraftClient.getInstance().textRenderer,
+					Text.translatable("arikeys.disabled_message"), mouseX, mouseY);
 	}
 
 	protected MutableText getNarrationMessage() {
@@ -58,11 +62,11 @@ public class AriKeysButton implements Drawable, Element, Selectable {
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.enableDepthTest();
-		context.drawTexture(WIDGETS_TEXTURE, this.x, this.y, 0, this.isHovered() ? 20 : 0, 20, 20);
+		context.drawTexture(WIDGETS_TEXTURE, this.x, this.y, this.active ? 0 : 20, this.isHovered() ? 20 : 0, 20, 20);
 	}
 
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (this.active && this.visible) {
+		if (this.active) {
 			if (this.isValidClickButton(button)) {
 				boolean click = this.clicked(mouseX, mouseY);
 				if (click) {
@@ -91,7 +95,7 @@ public class AriKeysButton implements Drawable, Element, Selectable {
 	}
 
 	protected boolean clicked(double mouseX, double mouseY) {
-		return this.active && this.visible && mouseX >= (double) this.x && mouseY >= (double) this.y && mouseX < (double) (this.x + 20) && mouseY < (double) (this.y + 20);
+		return this.active && mouseX >= (double) this.x && mouseY >= (double) this.y && mouseX < (double) (this.x + 20) && mouseY < (double) (this.y + 20);
 	}
 
 	public boolean isHovered() {
@@ -99,7 +103,7 @@ public class AriKeysButton implements Drawable, Element, Selectable {
 	}
 
 	public boolean isMouseOver(double mouseX, double mouseY) {
-		return this.active && this.visible && mouseX >= (double) this.x && mouseY >= (double) this.y && mouseX < (double) (this.x + 20) && mouseY < (double) (this.y + 20);
+		return this.active && mouseX >= (double) this.x && mouseY >= (double) this.y && mouseX < (double) (this.x + 20) && mouseY < (double) (this.y + 20);
 	}
 
 	@Override
@@ -111,20 +115,12 @@ public class AriKeysButton implements Drawable, Element, Selectable {
 		soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 	}
 
-	public Text getMessage() {
-		return this.message;
-	}
-
-	public boolean isFocused() {
-		return this.focused;
-	}
-
 	public boolean isNarratable() {
-		return this.visible && this.active;
+		return this.active;
 	}
 
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (this.active && this.visible) {
+		if (this.active) {
 			if (keyCode != GLFW.GLFW_KEY_ENTER && keyCode != GLFW.GLFW_KEY_SPACE && keyCode != GLFW.GLFW_KEY_KP_ENTER) {
 				return false;
 			} else {

@@ -26,10 +26,9 @@ public class AKOptionsScreen extends Screen {
 
 	@Inject(method = "init", at = @At("TAIL"))
 	protected void initAriKeysButton(CallbackInfo ci) {
-		if (client == null || client.isInSingleplayer() || AriKeys.getKeybinds().isEmpty()) return;
+		if (client == null || client.isInSingleplayer()) return;
 		// Add the arikeys button widget
-		this.addDrawableChild(new AriKeysButton(this.width / 2 + 158, this.height / 6 + 72 - 6,
-				(button) -> this.client.setScreen(new AriKeysOptions(this, this.settings))));
+		this.addDrawableChild(new AriKeysButton(AriKeys.getKeybinds().isEmpty(), this.width / 2 + 158,
+				this.height / 6 + 72 - 6, (button) -> this.client.setScreen(new AriKeysOptions(this, this.settings))));
 	}
-
 }

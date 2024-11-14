@@ -138,7 +138,7 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 				final List<KeyBinding> bindings = new ArrayList<>(List.of(client.options.allKeys));
 				for (KeyBinding keyBinding : bindings) {
 					if (keyBinding.getBoundKeyTranslationKey().equals(ariKey.getBoundKeyCode().getTranslationKey()) && ariKey.getBoundModifiers()
-							.size() == 0) {
+							.isEmpty()) {
 						bl2 = true;
 						break;
 					}
