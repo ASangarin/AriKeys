@@ -50,10 +50,6 @@ public class AriKeyControlsListWidget extends ElementListWidget<AriKeyControlsLi
 
 	}
 
-	protected int getScrollbarPositionX() {
-		return super.getScrollbarPositionX() + 15;
-	}
-
 	public int getRowWidth() {
 		return super.getRowWidth() + 32;
 	}

@@ -3,6 +3,7 @@ package eu.asangarin.arikeys;
 import eu.asangarin.arikeys.util.ModifierKey;
 import eu.asangarin.arikeys.util.network.KeyAddData;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
@@ -17,6 +18,7 @@ public class AriKey {
 	private final InputUtil.Key keyCode;
 	private InputUtil.Key boundKeyCode;
 	private final Set<ModifierKey> modifiers;
+	@Setter
 	private Set<ModifierKey> boundModifiers;
 
 	public AriKey(KeyAddData data) {
@@ -41,10 +43,6 @@ public class AriKey {
 			setBoundModifiers(mods);
 		}
 		this.boundKeyCode = key;
-	}
-
-	public void setBoundModifiers(Set<ModifierKey> modifiers) {
-		this.boundModifiers = modifiers;
 	}
 
 	public void resetBoundModifiers() {

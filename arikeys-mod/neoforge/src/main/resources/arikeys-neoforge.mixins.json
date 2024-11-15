@@ -3,8 +3,7 @@
   "package": "eu.asangarin.arikeys.neoforge.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "AKKeyboardNeoForgeMixin",
-    "AKPacketHandlerMixinTest"
+    "AKKeyboardNeoForgeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -14,6 +14,7 @@ public class KeyAddData {
 	private final int[] modifiers;
 
 	public static KeyAddData fromBuffer(PacketByteBuf buf) {
+		buf.readByte();
 		String path = buf.readString();
 		String key = buf.readString();
 		int defKey = buf.readInt();

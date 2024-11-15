@@ -8,7 +8,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.screen.ScreenTexts;
@@ -22,8 +21,8 @@ public class AriKeysOptions extends GameOptionsScreen {
 	private AriKeyControlsListWidget keyBindingListWidget;
 	private ButtonWidget resetButton;
 
-	public AriKeysOptions(Screen parent, GameOptions options) {
-		super(parent, options, Text.translatable("arikeys.controls.title"));
+	public AriKeysOptions(Screen parent) {
+		super(parent, null, Text.translatable("arikeys.controls.title"));
 	}
 
 	protected void init() {
@@ -93,10 +92,5 @@ public class AriKeysOptions extends GameOptionsScreen {
 		}
 
 		this.resetButton.active = canReset;
-	}
-
-	@Override
-	public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-		this.renderBackgroundTexture(context);
 	}
 }
