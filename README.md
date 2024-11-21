@@ -25,9 +25,7 @@ Latest supported Minecraft version: **1.20.1**
 AriKeys must be used alongside a server running the [AriKeysPlugin](https://www.spigotmc.org/resources/arikeysplugin-custom-keybinds.105968/)
 When joining such a server, it will send the configured keybinds to your client and you will be able to see and change keybindings from the game menu.
 
-![AriKeys Button](https://i.imgur.com/LAFh91m.png)
-
-(Please note that the button only appears on compatible servers)
+![AriKeys Button](https://i.imgur.com/bUypgi1.png)
 
 ## Support
 If you require support or have questions, reach out to me on the [Support Discord](https://discord.gg/bPkStPTmNK) or simply open an issue on this GitHub repo.
