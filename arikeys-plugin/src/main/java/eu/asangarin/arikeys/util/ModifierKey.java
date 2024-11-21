@@ -1,4 +1,4 @@
-package eu.asangarin.arikeys;
+package eu.asangarin.arikeys.util;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

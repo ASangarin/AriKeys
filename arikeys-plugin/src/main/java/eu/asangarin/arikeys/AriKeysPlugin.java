@@ -1,7 +1,9 @@
 package eu.asangarin.arikeys;
 
 import eu.asangarin.arikeys.cmd.AriKeysCommand;
+import eu.asangarin.arikeys.config.AriKeyInfo;
 import eu.asangarin.arikeys.config.AriKeysConfig;
+import eu.asangarin.arikeys.util.AriKeysChannels;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -52,6 +54,12 @@ public final class AriKeysPlugin extends JavaPlugin {
 	public void reload() {
 		reloadConfig();
 		conf.reload(getConfig());
+	}
+
+	public static boolean addCustomKeyInfo(AriKeyInfo keyInfo) {
+		if(plugin != null)
+			return plugin.conf.addCustom(keyInfo);
+		return false;
 	}
 
 	public static AriKeysPlugin get() {

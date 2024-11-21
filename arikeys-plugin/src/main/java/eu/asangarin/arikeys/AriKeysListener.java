@@ -1,5 +1,6 @@
 package eu.asangarin.arikeys;
 
+import eu.asangarin.arikeys.util.AriKeysChannels;
 import io.netty.buffer.Unpooled;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;

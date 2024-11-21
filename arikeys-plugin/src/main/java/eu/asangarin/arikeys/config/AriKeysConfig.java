@@ -41,6 +41,14 @@ public class AriKeysConfig {
 	}
 
 	private void error(String name) {
-		AriKeysPlugin.get().getLogger().severe("Unable to add MythicKey: '" + name + "' - Check your syntax!");
+		AriKeysPlugin.get().getLogger().severe("Unable to add AriKey: '" + name + "' - Check your syntax!");
+	}
+
+	public boolean addCustom(AriKeyInfo keyInfo) {
+		NamespacedKey key = keyInfo.getId();
+		if(keyInfoList.containsKey(key))
+			return false;
+		keyInfoList.put(key, keyInfo);
+		return true;
 	}
 }

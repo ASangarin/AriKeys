@@ -3,6 +3,9 @@ package eu.asangarin.arikeys;
 import eu.asangarin.arikeys.api.AriKeyPressEvent;
 import eu.asangarin.arikeys.api.AriKeyReleaseEvent;
 import eu.asangarin.arikeys.config.AriKeyInfo;
+import eu.asangarin.arikeys.util.AriKeysChannels;
+import eu.asangarin.arikeys.util.ModifierKey;
+import eu.asangarin.arikeys.util.PressType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.DecoderException;
@@ -32,11 +35,13 @@ public class AriKeysNetwork {
 				boolean eventCmd = AriKeysPlugin.get().getConf().isEventOnCommand();
 
 				if (firstPress) {
+					info.getExecutor().execute(PressType.PRESS);
 					if (!info.runCommand(player) || eventCmd) Bukkit.getPluginManager().callEvent(new AriKeyPressEvent(player, id, true));
 					if (info.hasMM(true)) info.mmSkill(player, true);
 					return;
 				}
 
+				info.getExecutor().execute(PressType.RELEASE);
 				if (!info.hasCommand() || eventCmd) Bukkit.getPluginManager().callEvent(new AriKeyReleaseEvent(player, id, true));
 				if (info.hasMM(false)) info.mmSkill(player, false);
 			} else {

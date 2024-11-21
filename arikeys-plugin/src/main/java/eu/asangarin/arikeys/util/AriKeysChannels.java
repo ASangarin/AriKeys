@@ -1,4 +1,4 @@
-package eu.asangarin.arikeys;
+package eu.asangarin.arikeys.util;
 
 public class AriKeysChannels {
 	// These channels are listened to either by the server or client.
