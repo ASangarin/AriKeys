@@ -22,7 +22,7 @@ public class KeyAddData {
 		String category = buf.readString();
 		int[] modifiers = buf.readIntArray();
 
-		Identifier id = new Identifier(path, key);
+		Identifier id = Identifier.of(path, key);
 		return new KeyAddData(id, name, category, defKey, modifiers);
 	}
 }

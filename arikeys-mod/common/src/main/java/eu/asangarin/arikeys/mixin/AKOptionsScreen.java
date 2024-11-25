@@ -4,6 +4,7 @@ import eu.asangarin.arikeys.AriKeys;
 import eu.asangarin.arikeys.screen.AriKeysButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.ControlsOptionsScreen;
+import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +22,7 @@ public class AKOptionsScreen extends Screen {
 		super(title);
 	}
 
-	@Inject(method = "init", at = @At("TAIL"))
+	@Inject(method = "addOptions", at = @At("TAIL"))
 	protected void initAriKeysButton(CallbackInfo ci) {
 		if (client == null || client.isInSingleplayer()) return;
 
@@ -34,11 +35,11 @@ public class AKOptionsScreen extends Screen {
 		}
 	}
 
-	@Inject(method = "initTabNavigation", at = @At("TAIL"))
-	protected void refreshAriKeysButton(CallbackInfo ci) {
-		if (client == null || client.isInSingleplayer()) return;
-
-		arikeys$refresh();
+	@Override
+	protected void initTabNavigation() {
+		super.initTabNavigation();
+		if (client != null && !client.isInSingleplayer())
+			arikeys$refresh();
 	}
 
 	@Unique
