@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "eu.asangarin.arikeys.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "AKKeyboardMixin",
+    "AKOptionsScreen",
+    "AKKeyboardFabricMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
