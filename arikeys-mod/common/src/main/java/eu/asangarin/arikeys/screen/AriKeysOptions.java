@@ -4,10 +4,12 @@ import eu.asangarin.arikeys.AriKey;
 import eu.asangarin.arikeys.AriKeys;
 import eu.asangarin.arikeys.util.AriKeysIO;
 import eu.asangarin.arikeys.util.ModifierKey;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.screen.ScreenTexts;
@@ -22,26 +24,39 @@ public class AriKeysOptions extends GameOptionsScreen {
 	private ButtonWidget resetButton;
 
 	public AriKeysOptions(Screen parent) {
-		super(parent, null, Text.translatable("arikeys.controls.title"));
+		super(parent, MinecraftClient.getInstance().options, Text.translatable("arikeys.controls.title"));
 	}
 
-	protected void init() {
-		if (client == null) return;
-		this.keyBindingListWidget = new AriKeyControlsListWidget(this, this.client);
-		this.addSelectableChild(this.keyBindingListWidget);
-		this.resetButton = this.addDrawableChild(ButtonWidget.builder(Text.translatable("controls.resetAll"), (button) -> {
+	@Override
+	protected void initBody() {
+		if (client != null)
+			this.keyBindingListWidget = this.layout.addBody(new AriKeyControlsListWidget(this, this.client));
+	}
+
+	@Override
+	protected void addOptions() {}
+
+	@Override
+	protected void initFooter() {
+		this.resetButton = ButtonWidget.builder(Text.translatable("controls.resetAll"), (button) -> {
 			for (AriKey keyBinding : AriKeys.getKeybinds()) {
 				keyBinding.setBoundKey(keyBinding.getKeyCode(), false);
 				keyBinding.resetBoundModifiers();
 			}
 			KeyBinding.updateKeysByCode();
-		}).dimensions(this.width / 2 - 155, this.height - 29, 150, 20).build());
-
-
-		this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, (button) -> this.client.setScreen(this.parent))
-				.dimensions(this.width / 2 - 155 + 160, this.height - 29, 150, 20).build());
+		}).build();
+		DirectionalLayoutWidget linearlayout = this.layout.addFooter(DirectionalLayoutWidget.horizontal().spacing(8));
+		linearlayout.add(this.resetButton);
+		linearlayout.add(ButtonWidget.builder(ScreenTexts.DONE, (button) -> this.close()).build());
 	}
 
+	@Override
+	protected void initTabNavigation() {
+		this.layout.refreshPositions();
+		this.keyBindingListWidget.position(this.width, this.layout);
+	}
+
+	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (this.focusedMKey != null) {
 			if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
@@ -65,6 +80,7 @@ public class AriKeysOptions extends GameOptionsScreen {
 		return false;
 	}
 
+	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (this.focusedMKey != null) {
 			focusedMKey.setBoundKey(InputUtil.Type.MOUSE.createFromCode(button), true);
@@ -78,10 +94,13 @@ public class AriKeysOptions extends GameOptionsScreen {
 		}
 	}
 
+	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 		super.render(context, mouseX, mouseY, delta);
-		this.keyBindingListWidget.render(context, mouseX, mouseY, delta);
-		context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+
+		/*this.keyBindingListWidget.render(context, mouseX, mouseY, delta);
+		context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);*/
+
 		boolean canReset = false;
 
 		for (AriKey ariKey : AriKeys.getKeybinds()) {

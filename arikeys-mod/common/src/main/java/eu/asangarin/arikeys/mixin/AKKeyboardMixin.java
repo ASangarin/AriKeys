@@ -34,7 +34,7 @@ public class AKKeyboardMixin {
 			if (binding != null) {
 				String path = arikeys$cleanTranslationKey(binding.getTranslationKey());
 				try {
-					Identifier id = new Identifier(Identifier.DEFAULT_NAMESPACE, path);
+					Identifier id = Identifier.of(Identifier.DEFAULT_NAMESPACE, path);
 					if (AriKeys.getVanillaKeys().contains(id))
 						arikeys$registerPress(id, key, pressed);
 				} catch (InvalidIdentifierException id) {
