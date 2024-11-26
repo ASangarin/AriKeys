@@ -39,23 +39,21 @@ public class AriKeysNetwork {
 					info.getExecutor().execute(PressType.PRESS);
 					if (!info.runCommand(player) || eventCmd) Bukkit.getPluginManager().callEvent(new AriKeyPressEvent(player, id, true));
 					if (info.hasMM(true)) info.mmSkill(player, true);
+					if (AriKeysPlugin.get().mm){
+						MythicMobsCompat.runSkills(true, id, player);
+					}
 					return;
 				}
 
 				info.getExecutor().execute(PressType.RELEASE);
 				if (!info.hasCommand() || eventCmd) Bukkit.getPluginManager().callEvent(new AriKeyReleaseEvent(player, id, true));
 				if (info.hasMM(false)) info.mmSkill(player, false);
-
 				if (AriKeysPlugin.get().mm){
-					MythicMobsCompat.runSkills(firstPress, id, player);
+					MythicMobsCompat.runSkills(false, id, player);
 				}
 			} else {
 				Bukkit.getPluginManager()
 						.callEvent(firstPress ? new AriKeyPressEvent(player, id, false) : new AriKeyReleaseEvent(player, id, false));
-
-				if (AriKeysPlugin.get().mm){
-					MythicMobsCompat.runSkills(firstPress, id, player);
-				}
 			}
 		} catch (IOException exception) {
 			exception.printStackTrace();
