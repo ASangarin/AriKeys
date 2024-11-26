@@ -1,9 +1,9 @@
 package eu.asangarin.arikeys.compat.mythic;
 
+import eu.asangarin.arikeys.AriKeysPlugin;
 import eu.asangarin.arikeys.api.AriKeyPressEvent;
 import eu.asangarin.arikeys.compat.MythicMobsCompat;
 import io.lumine.mythic.api.adapters.AbstractEntity;
-import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.api.skills.INoTargetSkill;
 import io.lumine.mythic.api.skills.IParentSkill;
 import io.lumine.mythic.api.skills.ITargetedEntitySkill;
@@ -12,13 +12,12 @@ import io.lumine.mythic.api.skills.SkillMetadata;
 import io.lumine.mythic.api.skills.SkillResult;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.bukkit.BukkitAdapter;
+import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent;
 import io.lumine.mythic.bukkit.utils.Events;
-import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.core.skills.auras.Aura;
 import io.lumine.mythic.core.utils.annotations.MythicField;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 
-import java.io.File;
 import java.util.Optional;
 
 @MythicMechanic(name = "onKeyPress", aliases = {"keyPress", "kp", "arikeys:onkeypress", "arikeys:keypress"})
@@ -32,8 +31,9 @@ public class AriKeysOnPressMechanic extends Aura implements ITargetedEntitySkill
 
     private Optional<Skill> onPressSkill = Optional.empty();
 
-    public AriKeysOnPressMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-        super(manager, file, line, mlc);
+    public AriKeysOnPressMechanic(AriKeysPlugin plugin, MythicMechanicLoadEvent event) {
+        super(event.getContainer().getManager(), event.getContainer().getFile(), event.getContainer().getConfigLine(), event.getConfig());
+        var mlc = event.getConfig();
 
         this.onPressSkillName = mlc.getString(new String[] {"onpress", "op"});
         this.keyId = mlc.getPlaceholderString(new String[] {"key", "k", "id"}, null);

@@ -1,9 +1,9 @@
 package eu.asangarin.arikeys.compat.mythic;
 
+import eu.asangarin.arikeys.AriKeysPlugin;
 import eu.asangarin.arikeys.api.AriKeyReleaseEvent;
 import eu.asangarin.arikeys.compat.MythicMobsCompat;
 import io.lumine.mythic.api.adapters.AbstractEntity;
-import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.api.skills.INoTargetSkill;
 import io.lumine.mythic.api.skills.IParentSkill;
 import io.lumine.mythic.api.skills.ITargetedEntitySkill;
@@ -12,13 +12,12 @@ import io.lumine.mythic.api.skills.SkillMetadata;
 import io.lumine.mythic.api.skills.SkillResult;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.bukkit.BukkitAdapter;
+import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent;
 import io.lumine.mythic.bukkit.utils.Events;
-import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.core.skills.auras.Aura;
 import io.lumine.mythic.core.utils.annotations.MythicField;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 
-import java.io.File;
 import java.util.Optional;
 
 @MythicMechanic(name = "onKeyrelease", aliases = {"keyrelease", "kr", "arikeys:onkeyrelease", "arikeys:keyrelease"})
@@ -32,9 +31,9 @@ public class AriKeysOnReleaseMechanic extends Aura implements ITargetedEntitySki
 
     private Optional<Skill> onReleaseSkill = Optional.empty();
 
-    public AriKeysOnReleaseMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-        super(manager, file, line, mlc);
-
+    public AriKeysOnReleaseMechanic(AriKeysPlugin plugin, MythicMechanicLoadEvent event) {
+        super(event.getContainer().getManager(), event.getContainer().getFile(), event.getContainer().getConfigLine(), event.getConfig());
+        var mlc = event.getConfig();
         this.onReleaseSkillName = mlc.getString(new String[] {"onrelease", "or"});
         this.keyId = mlc.getPlaceholderString(new String[] {"key", "k", "id"}, null);
 
