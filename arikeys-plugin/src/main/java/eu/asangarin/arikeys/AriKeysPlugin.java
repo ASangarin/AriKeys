@@ -1,6 +1,7 @@
 package eu.asangarin.arikeys;
 
 import eu.asangarin.arikeys.cmd.AriKeysCommand;
+import eu.asangarin.arikeys.compat.MythicMobsCompat;
 import eu.asangarin.arikeys.config.AriKeyInfo;
 import eu.asangarin.arikeys.config.AriKeysConfig;
 import eu.asangarin.arikeys.util.AriKeysChannels;
@@ -37,6 +38,10 @@ public final class AriKeysPlugin extends JavaPlugin {
 
 		papi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 		mm = Bukkit.getPluginManager().getPlugin("MythicMobs") != null;
+
+		if (mm){
+			MythicMobsCompat.registerComponents();
+		}
 
 		saveDefaultConfig();
 		reload();

@@ -2,6 +2,7 @@ package eu.asangarin.arikeys;
 
 import eu.asangarin.arikeys.api.AriKeyPressEvent;
 import eu.asangarin.arikeys.api.AriKeyReleaseEvent;
+import eu.asangarin.arikeys.compat.MythicMobsCompat;
 import eu.asangarin.arikeys.config.AriKeyInfo;
 import eu.asangarin.arikeys.util.AriKeysChannels;
 import eu.asangarin.arikeys.util.ModifierKey;
@@ -44,9 +45,17 @@ public class AriKeysNetwork {
 				info.getExecutor().execute(PressType.RELEASE);
 				if (!info.hasCommand() || eventCmd) Bukkit.getPluginManager().callEvent(new AriKeyReleaseEvent(player, id, true));
 				if (info.hasMM(false)) info.mmSkill(player, false);
+
+				if (AriKeysPlugin.get().mm){
+					MythicMobsCompat.runSkills(firstPress, id, player);
+				}
 			} else {
 				Bukkit.getPluginManager()
 						.callEvent(firstPress ? new AriKeyPressEvent(player, id, false) : new AriKeyReleaseEvent(player, id, false));
+
+				if (AriKeysPlugin.get().mm){
+					MythicMobsCompat.runSkills(firstPress, id, player);
+				}
 			}
 		} catch (IOException exception) {
 			exception.printStackTrace();
