@@ -19,6 +19,10 @@ public class MythicMobsCompat {
 
 	public static final String KEY_ID = "arikeys-key-id";
 
+	public static void registerComponents(){
+		new CustomComponentRegistry(AriKeysPlugin.get(), "eu.asangarin.arikeys.compat.mythic");
+	}
+
 	public static void runSkill(String id, Player player) {
 		if (id == null || id.isEmpty()) return;
 
